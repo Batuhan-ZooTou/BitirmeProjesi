@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using _Game.Scripts.Managers;
 
 namespace _Game.Scripts.Player
 {
@@ -22,9 +23,6 @@ namespace _Game.Scripts.Player
         #endregion
         [SerializeField] private Animator _animator;
         public Animator Animator => _animator;
-        public AudioClip LandingAudioClip;
-        public AudioClip[] FootstepAudioClips;
-        [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
         [SerializeField]private Player player;
         public void SetMovement(float value, float animSpeed)
         {
@@ -51,11 +49,7 @@ namespace _Game.Scripts.Player
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
-                if (FootstepAudioClips.Length > 0)
-                {
-                    var index = Random.Range(0, FootstepAudioClips.Length);
-                    AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(transform.position), FootstepAudioVolume);
-                }
+                SoundManager.Instance.PlayRandomSoundOnGroupAtPoint(SoundType.Walk, transform.position);
             }
         }
 
@@ -63,9 +57,8 @@ namespace _Game.Scripts.Player
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
-                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(transform.position), FootstepAudioVolume);
+                SoundManager.Instance.PlaySoundAtPoint(SoundType.Land, transform.position);
             }
         }
-
     }
 }
