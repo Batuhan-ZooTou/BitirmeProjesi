@@ -50,6 +50,7 @@ namespace _Game.Scripts.Player.Guns
             Physics.IgnoreCollision(colliderToIgnore, projectile.GetComponent<Collider>(), true);
             projectile.SetProjectileValues(gunData.baseDamage, gunData.baseTravelSpeed, gunData.baseMaxRange);
             projectile.gameObject.SetActive(true);
+            SoundManager.Instance.PlayOneShotSound(SoundType.Shot);
         }
         // invoked when we exceed the maximum number of pooled items (i.e. destroy the pooled object)
         private void OnDestroyPooledObject(Projectile projectile)

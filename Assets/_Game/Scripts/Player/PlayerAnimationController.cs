@@ -49,7 +49,7 @@ namespace _Game.Scripts.Player
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
-                SoundManager.Instance.PlayRandomSoundOnGroupAtPoint(SoundType.Walk, transform.position);
+                SoundManager.Instance.PlayRandomSoundOnGroup(SoundType.Walk);
             }
         }
 
@@ -57,7 +57,7 @@ namespace _Game.Scripts.Player
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
-                SoundManager.Instance.PlaySoundAtPoint(SoundType.Land, transform.position);
+                SoundManager.Instance.PlayOneShotSound(SoundType.Land);
             }
         }
     }

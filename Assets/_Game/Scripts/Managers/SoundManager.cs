@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using _Game.Scripts.Extensions;
 using System;
 using System.Linq;
@@ -31,10 +32,38 @@ namespace _Game.Scripts.Managers
 
     public class SoundManager : Singleton<SoundManager>
     {
+        private const string _masterVolume = "MasterVolume";
+        private const string _sfxVolumee = "SfxVolume";
+        private const string _musicVolume = "MusicVolume";
+        private const string _dialogueVolume = "DialogueVolume";
+
         [SerializeField] private List<SoundItem> sounds;
         [SerializeField] private List<SoundGroupItem> groupSounds;
+        [SerializeField] private AudioMixer audioMixer;
+        [Range(0, 100)] [SerializeField] private float masterVolume;
         [SerializeField] private AudioSource sfxAudioSource;
+        [Range(0, 100)] [SerializeField] private float sfxVolume;
         [SerializeField] private AudioSource musicAudioSource;
+        [Range(0, 100)] [SerializeField] private float musicVolume;
+        [SerializeField] private AudioSource dialogueAudioSource;
+        [Range(0, 100)] [SerializeField] private float dialogueVolume;
+
+        public void SetMasterVolume()
+        {
+            audioMixer.SetFloat(_masterVolume, masterVolume.Remap(0, 100, -80, 20));
+        }
+        public void SetSfxVolume()
+        {
+            audioMixer.SetFloat(_sfxVolumee, sfxVolume.Remap(0, 100, -80, 20));
+        }
+        public void SetMusicVolume()
+        {
+            audioMixer.SetFloat(_musicVolume, musicVolume.Remap(0, 100, -80, 20));
+        }
+        public void SetDialogueVolume()
+        {
+            audioMixer.SetFloat(_dialogueVolume, dialogueVolume.Remap(0, 100, -80, 20));
+        }
         public void PlayOneShotSound(SoundType sound)
         {
             var currentSound = sounds.FirstOrDefault(item => item.id == sound);
