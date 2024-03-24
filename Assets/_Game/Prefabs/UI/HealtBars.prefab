@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3592106466765059444}
   - component: {fileID: 1508431657844937840}
+  - component: {fileID: 4275780623837061044}
   m_Layer: 5
   m_Name: HealtBars
   m_TagString: Untagged
@@ -123,6 +124,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1843933498262618895}
   m_CullTransparentMesh: 0
+--- !u!114 &4275780623837061044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843933498262618895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fb4dd9a6df323843ab8bda5e7d3899f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  billboardType: 1
+  lockState:
+    x: 1
+    y: 0
+    z: 0
 --- !u!1 &2644236440276693937
 GameObject:
   m_ObjectHideFlags: 0
