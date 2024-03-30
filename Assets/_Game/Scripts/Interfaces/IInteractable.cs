@@ -20,5 +20,6 @@ public interface IInteractable
     public void Highlight();
     public void DeHighlight();
     public void AllowInteraction();
+    public void DisAllowInteraction();
     public void Interact();
 }

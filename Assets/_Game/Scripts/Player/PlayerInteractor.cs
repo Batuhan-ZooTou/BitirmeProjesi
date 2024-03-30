@@ -105,6 +105,10 @@ namespace _Game.Scripts.Player
                     {
                         highlightedInteractable.AllowInteraction();
                     }
+                    else
+                    {
+                        highlightedInteractable.DisAllowInteraction();
+                    }
                 }
             }
         }

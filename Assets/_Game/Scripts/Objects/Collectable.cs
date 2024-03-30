@@ -43,6 +43,14 @@ public class Collectable : MonoBehaviour, IInteractable
             canInteract = true;
         }
     }
+    public void DisAllowInteraction()
+    {
+        if (interactionState == InteractionState.Interactable)
+        {
+            interactionState = InteractionState.DeHighlighted;
+            Highlight();
+        }
+    }
     public void Interact()
     {
         if (interactionState == InteractionState.Interactable)
