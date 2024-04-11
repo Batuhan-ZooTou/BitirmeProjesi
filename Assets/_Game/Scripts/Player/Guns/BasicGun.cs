@@ -17,6 +17,7 @@ namespace _Game.Scripts.Player.Guns
         [Tooltip("Collider to bullet should not collide")]
         [SerializeField] private Collider colliderToIgnore;
         private IObjectPool<Projectile> objectPool;
+        [SerializeField] private PlayerCombat holder;
 
         private float nextTimeToShoot;
         private Transform pooledObjectsHolder;
@@ -44,7 +45,8 @@ namespace _Game.Scripts.Player.Guns
         // invoked when retrieving the next item from the object pool
         private void OnGetFromPool(Projectile projectile)
         {
-            projectile.transform.SetPositionAndRotation(muzzlePosition.position, Quaternion.LookRotation(muzzlePosition.transform.forward));
+            Vector3 relativePos = holder.lookPosition.position - muzzlePosition.position;
+            projectile.transform.SetPositionAndRotation(muzzlePosition.position, Quaternion.LookRotation(relativePos));
             projectile.spawnPoint = projectile.transform.position;
             projectile.travelDirection = projectile.transform.forward;
             Physics.IgnoreCollision(colliderToIgnore, projectile.GetComponent<Collider>(), true);
@@ -60,6 +62,11 @@ namespace _Game.Scripts.Player.Guns
         public void Shot()
         {
             objectPool.Get();
+        }
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(muzzlePosition.position, muzzlePosition.forward*10);
         }
     }
 }

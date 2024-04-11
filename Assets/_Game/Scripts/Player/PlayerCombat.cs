@@ -12,6 +12,9 @@ namespace _Game.Scripts.Player
     {
         [SerializeField] private Player player;
         [SerializeField]private BasicGun gun;
+        [SerializeField] private LayerMask mouseColliderLayerMask = new LayerMask();
+        [SerializeField] public Transform lookPosition;
+        [SerializeField] private float lookPositionSpeed;
         void Start()
         {
             player.inputManager = InputManager.Instance;
@@ -24,7 +27,12 @@ namespace _Game.Scripts.Player
         }
         void Update()
         {
-
+            Vector2 screenPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+            Ray ray = Camera.main.ScreenPointToRay(screenPoint);
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, mouseColliderLayerMask))
+            {
+                lookPosition.position = Vector3.Lerp(lookPosition.position, raycastHit.point, lookPositionSpeed*Time.deltaTime);
+            }
         }
         public void Shot(InputAction.CallbackContext context)
         {

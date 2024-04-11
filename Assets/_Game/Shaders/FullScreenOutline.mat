@@ -38,9 +38,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BlackBoardMax: 0.8
+    - _BlackBoardMin: 0.3
+    - _Multiply: 0
     - _SmoothMax: 0.1
     - _SmoothMin: 0.5
-    - _Thickness: 1.13
+    - _Thickness: 1
+    - _interval: 1
     m_Colors:
-    - _OutlineColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

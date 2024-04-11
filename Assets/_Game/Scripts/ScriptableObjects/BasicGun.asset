@@ -16,7 +16,7 @@ MonoBehaviour:
   <projectilePrefab>k__BackingField: {fileID: 9011325319782339134, guid: 4c510c6d57e78c647afaa6684d0d409b,
     type: 3}
   <baseDamage>k__BackingField: 10
-  <baseTravelSpeed>k__BackingField: 7
+  <baseTravelSpeed>k__BackingField: 25
   <baseMaxRange>k__BackingField: 100
   <defaultCapacity>k__BackingField: 25
   <maxSize>k__BackingField: 100

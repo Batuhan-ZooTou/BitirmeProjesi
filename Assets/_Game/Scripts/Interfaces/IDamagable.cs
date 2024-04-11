@@ -17,7 +17,12 @@ namespace _Game.Scripts.Interfaces
         public TextMeshProUGUI currentHealthText { get; set; }
         public Gradient healthBarColorGradient { get; set; }
         public Image healthBarColor { get; set; }
-        public void TakeDamage(float damage);
+        public SkinnedMeshRenderer skinnedMeshRenderer { get; set; }
+        public void TakeDamage(float damage, Vector3 direction);
         public void GetKnockback();
+        public void DamagePopup(float damage);
+        public void HitFeedback();
+        public void UpdateHealthBar();
+        public void DeathFeedback();
     }
 }

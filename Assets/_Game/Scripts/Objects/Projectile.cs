@@ -26,7 +26,7 @@ namespace _Game.Scripts.Objects
         {
             if (Vector3.Distance(spawnPoint, transform.position) < baseMaxRange)
             {
-                projectileRigidbody.velocity = new Vector3(travelDirection.x * baseTravelSpeed, 0, travelDirection.z * baseTravelSpeed);
+                projectileRigidbody.velocity = new Vector3(travelDirection.x * baseTravelSpeed, travelDirection.y * baseTravelSpeed, travelDirection.z * baseTravelSpeed);
             }
             else
             {
@@ -37,7 +37,7 @@ namespace _Game.Scripts.Objects
         {
             if (other.TryGetComponent(out IDamagable damagable))
             {
-                damagable.TakeDamage(baseDamage);
+                damagable.TakeDamage(baseDamage,travelDirection);
             }
             projectilePool.Release(this);
         }

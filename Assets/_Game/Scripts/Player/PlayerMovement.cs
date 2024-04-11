@@ -102,14 +102,12 @@ namespace _Game.Scripts.Player
             {
                 targetSpeed = 0.0f;
             }
-            else
-            {
-                // if there is a move input rotate player when the player is moving
-                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +_mainCamera.transform.eulerAngles.y;
-                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
-                // rotate to face input direction relative to camera position
-                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-            }
+            // if there is a move input rotate player when the player is moving
+            _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+
+            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _mainCamera.transform.eulerAngles.y, ref _rotationVelocity, RotationSmoothTime);
+            // rotate to face input direction relative to camera position
+            transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             // a reference to player direction
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
@@ -131,7 +129,7 @@ namespace _Game.Scripts.Player
             // update animator if using character
             _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
             if (_animationBlend < 0.01f) _animationBlend = 0f;
-            player.playerAnimationController.SetMovement(_animationBlend,1);
+            player.playerAnimationController.SetMovement(inputDirection.x, inputDirection.z, player.inputManager.isSprinting, 1);
         }
         private void JumpAndGravity()
         {
