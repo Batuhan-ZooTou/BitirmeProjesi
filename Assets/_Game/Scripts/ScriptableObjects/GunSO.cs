@@ -6,6 +6,12 @@ using _Game.Scripts.Objects;
 
 namespace _Game.Scripts.ScriptableObjects
 {
+    public enum GunActionState
+    {
+        Idle,
+        LoadingChamber,
+        Reloading,
+    }
     [CreateAssetMenu(fileName = "Guns",menuName ="Guns/Gun")]
     public class GunSO : ScriptableObject
     {
@@ -22,6 +28,11 @@ namespace _Game.Scripts.ScriptableObjects
         [Title("Gun Values")]
         public string GunId;
         [field: SerializeField] public float baseRateOfFire { get; private set; }
+        [field: SerializeField] public int magSize { get; private set; }
+        [field: SerializeField] public int projectileCount { get; private set; }
+        [field: SerializeField] public float reloadTime { get; private set; }
+        [field: SerializeField] public float spreadAmount { get; private set; }
+
         [Tooltip("Can hold to fire")]
         [field: SerializeField] public bool isSingleShot { get; private set; }
     }

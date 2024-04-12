@@ -21,5 +21,9 @@ MonoBehaviour:
   <defaultCapacity>k__BackingField: 25
   <maxSize>k__BackingField: 100
   GunId: BasicGun
-  <baseRateOfFire>k__BackingField: 500
+  <baseRateOfFire>k__BackingField: 90
+  <magSize>k__BackingField: 6
+  <projectileCount>k__BackingField: 8
+  <reloadTime>k__BackingField: 2.5
+  <spreadAmount>k__BackingField: 0.4
   <isSingleShot>k__BackingField: 1
