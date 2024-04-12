@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using _Game.Scripts.Extensions;
+using Sirenix.OdinInspector;
 
 namespace _Game.Scripts.Enemy
 {
@@ -11,10 +13,10 @@ namespace _Game.Scripts.Enemy
         {
             base.Awake();
             var idle = new IdleState(this);
-            var chaseTarget = new ChaseTargetState(this, currentDestination);
+            var chaseTarget = new ChaseTargetState(this);
             var die = new DeathState(this);
-            At(idle,chaseTarget, new FuncPredicate(()=> HasTarget()));
-            At(chaseTarget, die, new FuncPredicate(() => IsDead()));
+            At(idle,chaseTarget, new FuncPredicate(() => HasTarget()));
+            Any(die, new FuncPredicate(() => IsDead()));
             stateMachine.SetState(idle);
 
         }

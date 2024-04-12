@@ -8,11 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: DebugMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 98601b79f2033c346adda7d82f0b6f69,
+  m_Shader: {fileID: -6465566751694194690, guid: cfe13b544dcc3804d9e466e150eb485b,
     type: 3}
   m_Parent: {fileID: 2100000, guid: 857344a72e626a5449c3efa3fdab885a, type: 2}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _MAIN_LIGHT_SHADOWS
   m_InvalidKeywords:
   - _ALPHAPREMULTIPLY_ON
   - _SURFACE_TYPE_TRANSPARENT

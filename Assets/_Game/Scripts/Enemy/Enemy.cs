@@ -15,7 +15,8 @@ namespace _Game.Scripts.Enemy
         public Transform currentDestination;
         public Transform currentLookTarget;
         public Collider hitbox;
-
+        public bool anyTargetChanged;
+        
         public virtual void Awake()
         {
             stateMachine = new StateMachine();

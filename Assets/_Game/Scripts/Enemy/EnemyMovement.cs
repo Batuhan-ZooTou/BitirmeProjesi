@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using _Game.Scripts.Extensions;
+using Sirenix.OdinInspector;
+
 namespace _Game.Scripts.Enemy
 {
     public class EnemyMovement : MonoBehaviour
@@ -13,25 +15,70 @@ namespace _Game.Scripts.Enemy
         [SerializeField] private float defaultMoveSpeed;
         [SerializeField][Range(0f, 3f)] private float rotationSmoothing;
         [SerializeField][Range(0.1f,1f)] private float slowRatioOnTurn;
+        [SerializeField] private bool canMove;
         private float _rotationVelocity;
         private void Start()
         {
             path = new NavMeshPath();
         }
-        public void MoveTowardsTarget(Vector3 position)
+        public void MoveTowardsTarget(Vector3 movePosition,Vector3 lookPosition)
         {
-            if (enemy.navMeshAgent.CalculatePath(position, path))
+            if (!canMove)
+                return;
+            if (enemy.navMeshAgent.CalculatePath(movePosition, path))
             {
-                float dot = Vector3.Dot((enemy.currentDestination.position - transform.position).normalized, transform.forward.normalized);
-                Vector3 dir = (path.corners[1] - transform.position).normalized;
-                float rotation = Vector3.SignedAngle(dir, transform.forward, Vector3.up);
-                rotation = rotation.Remap(-180, 180, -1, 1);
-                enemy.animationController.SetMovement(-rotation, dot, false, 1);
+                //Dot product to destination
+                float dot = Vector3.Dot((movePosition - transform.position).normalized, transform.forward.normalized);
+                //Move Direction to next corner
+                Vector3 moveDirection = (path.corners[1] - transform.position).normalized;
+                //Look direction changes if he has look target
+                Vector3 lookDirection;
+                if (movePosition!= lookPosition)
+                {
+                   lookDirection = (lookPosition - transform.position).normalized;
+                }
+                else
+                {
+                    lookDirection = moveDirection;
+                }
+                Debug.DrawLine(transform.position, transform.position + moveDirection, Color.red);
+                Debug.DrawLine(transform.position, transform.position + lookDirection, Color.green);
+                //which side it should turn (Kinda inverse of dot product it calculates 0 to 1 insted of 1-0)
+                float rotation = Vector3.SignedAngle(lookDirection, moveDirection, Vector3.up);
+                if (Mathf.Abs(rotation)>90)
+                {
+                    float diffrence = Mathf.Abs(rotation) - 90;
+                    if (rotation<0)
+                    {
+                        rotation = -90 + diffrence;
+                    }
+                    else
+                    {
+                        rotation = 90 - diffrence;
+                    }
+                }
+                rotation = rotation.Remap(-90, 90, -1, 1);
+                //Set move animation
+                enemy.animationController.SetMovement(rotation, dot, false, 1);
+                //Calculate current move speed
                 dot = dot.Remap(-1, 1, 1 * slowRatioOnTurn, 1);
                 float currentSpeed = defaultMoveSpeed/100 * dot;
                 enemy.navMeshAgent.speed = currentSpeed;
-                enemy.navMeshAgent.Move(dir *currentSpeed);
-                RotateTowardsTarget(dir);
+                //move along direction
+                enemy.navMeshAgent.Move(moveDirection * currentSpeed);
+                //rotate towards target
+                RotateTowardsTarget(lookDirection);
+            }
+        }
+        public void ChangeTarget(Transform newDestination = null, Transform newLookTarget = null)
+        {
+            if (!newDestination.IsNull())
+            {
+                enemy.currentDestination = newDestination;
+            }
+            if (!newLookTarget.IsNull())
+            {
+                enemy.currentLookTarget = newLookTarget;
             }
         }
         public void RotateTowardsTarget(Vector3 direction)
@@ -41,8 +88,13 @@ namespace _Game.Scripts.Enemy
             // rotate to face input direction relative to camera position
             transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
         }
-        public void Stop()
+        public void StopMovement()
         {
+            canMove = false;
+        }
+        public void ContinueMovement()
+        {
+            canMove = true;
         }
         private void OnDrawGizmos()
         {

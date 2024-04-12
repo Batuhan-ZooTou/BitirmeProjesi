@@ -7,11 +7,10 @@ namespace _Game.Scripts.Enemy
     public class ChaseTargetState : IState
     {
         MeleeMushroomAgent _agent;
-        Transform _destination;
-        public ChaseTargetState(MeleeMushroomAgent agent, Transform destination)
+
+        public ChaseTargetState(MeleeMushroomAgent agent)
         {
             _agent = agent;
-            _destination = destination;
         }
         public void OnEnter()
         {
@@ -21,11 +20,9 @@ namespace _Game.Scripts.Enemy
         public void OnExit()
         {
         }
-
         public void Update()
         {
-            _agent.movement.MoveTowardsTarget(_destination.position);
-
+            _agent.movement.MoveTowardsTarget(_agent.currentDestination.position, _agent.currentLookTarget.position);
         }
         public void FixedUpdate()
         {

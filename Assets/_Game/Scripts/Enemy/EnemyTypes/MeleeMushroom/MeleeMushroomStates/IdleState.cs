@@ -13,7 +13,6 @@ namespace _Game.Scripts.Enemy
         }
         public void OnEnter()
         {
-            Debug.Log("idle", _agent.gameObject);
 
         }
         public void OnExit()
