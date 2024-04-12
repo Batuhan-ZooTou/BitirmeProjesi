@@ -14,6 +14,7 @@ namespace _Game.Scripts.Enemy
         public void OnEnter()
         {
             Debug.Log("dead", _agent.gameObject);
+            _agent.hitbox.enabled = false;
         }
         
         public void FixedUpdate()

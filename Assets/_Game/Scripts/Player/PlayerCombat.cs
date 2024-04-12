@@ -18,12 +18,15 @@ namespace _Game.Scripts.Player
         void Start()
         {
             player.inputManager = InputManager.Instance;
-            player.inputManager.playerInputAsset.Player.Shot.started += Shot;
+            player.inputManager.playerInputAsset.Player.Shot.performed += Shot;
+            player.inputManager.playerInputAsset.Player.Reload.started += Reload;
+
 
         }
         private void OnDisable()
         {
-            player.inputManager.playerInputAsset.Player.Shot.started -= Shot;
+            player.inputManager.playerInputAsset.Player.Shot.performed -= Shot;
+            player.inputManager.playerInputAsset.Player.Reload.started -= Reload;
         }
         void Update()
         {
@@ -41,6 +44,10 @@ namespace _Game.Scripts.Player
             //{
             //    playerInput.isShoting = false;
             //}
+        }
+        public void Reload(InputAction.CallbackContext context)
+        {
+            gun.SetAction(ScriptableObjects.GunActionState.Reloading);
         }
     }
 }

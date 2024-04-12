@@ -80,7 +80,9 @@ namespace _Game.Scripts.Combat
             DOVirtual.Float(0, 1, 1f, (float disolve) =>
             {
                 skinnedMeshRenderer.material.SetFloat("_DissolveAmount", disolve);
-            }).SetDelay(1f);
+            }).SetDelay(2f).OnComplete(()=> {
+                Destroy(transform.gameObject);
+            });
         }
         public virtual void OnDeath()
         {
