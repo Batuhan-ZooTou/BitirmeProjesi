@@ -63,11 +63,9 @@ namespace _Game.Scripts.Player
         [Header("Prefabs References")]
         [SerializeField]private CharacterController _controller;
         [SerializeField] private Player player;
-        private GameObject _mainCamera;
 
         private void Start()
         {
-            _mainCamera = Camera.main.gameObject;
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
             //Subscribe to Input Actions
@@ -85,7 +83,10 @@ namespace _Game.Scripts.Player
         {
             JumpAndGravity();
             GroundedCheck();
-            Move();
+            if (!player.inputManager.inputDisabled)
+            {
+                Move();
+            }
         }
         public void Move()
         {
@@ -102,10 +103,11 @@ namespace _Game.Scripts.Player
             {
                 targetSpeed = 0.0f;
             }
+            
             // if there is a move input rotate player when the player is moving
-            _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+            _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + player.mainCamera.transform.eulerAngles.y;
 
-            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _mainCamera.transform.eulerAngles.y, ref _rotationVelocity, RotationSmoothTime);
+            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, player.mainCamera.transform.eulerAngles.y, ref _rotationVelocity, RotationSmoothTime);
             // rotate to face input direction relative to camera position
             transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             // a reference to player direction

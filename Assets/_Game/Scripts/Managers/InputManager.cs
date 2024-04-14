@@ -9,6 +9,7 @@ namespace _Game.Scripts.Managers
     public class InputManager : Singleton<InputManager>
     {
         public PlayerInputAsset playerInputAsset;
+        public bool inputDisabled;
         [Header("Character Input Values")]
         public Vector2 moveInput;
         public Vector2 lookInput;
@@ -46,8 +47,18 @@ namespace _Game.Scripts.Managers
         }
         private void Update()
         {
+            if (inputDisabled) 
+                return;
             moveInput=playerInputAsset.Player.Move.ReadValue<Vector2>();
             lookInput = playerInputAsset.Player.Look.ReadValue<Vector2>();
+        }
+        public void DisableInput()
+        {
+            inputDisabled = true;
+        }
+        public void EnableInput()
+        {
+            inputDisabled = false;
         }
         public void Jump(InputAction.CallbackContext context)
         {

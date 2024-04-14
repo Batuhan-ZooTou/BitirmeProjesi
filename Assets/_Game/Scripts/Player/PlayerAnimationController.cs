@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using _Game.Scripts.Managers;
+using UnityEngine.Animations.Rigging;
+using DG.Tweening;
 
 namespace _Game.Scripts.Player
 {
@@ -25,6 +27,7 @@ namespace _Game.Scripts.Player
         [SerializeField] private Animator _animator;
         public Animator Animator => _animator;
         [SerializeField]private Player player;
+        [SerializeField]private Rig rig;
         public void SetMovement(float directionX, float directionY, bool isRunning, float animSpeed)
         {
             if (isRunning)
@@ -38,6 +41,13 @@ namespace _Game.Scripts.Player
                 _animator.SetFloat(_DirectionY, directionY, 0.05f, Time.deltaTime);
             }
             _animator.SetFloat(_animIDMotionSpeed, animSpeed);
+        }
+        public void ChangeRigWeight(float target)
+        {
+            DOVirtual.Float(rig.weight, target, 1, (float current) =>
+            {
+                rig.weight = current;
+            });
         }
         public void SetAirMovement(AirMovement airMovement, bool value)
         {
