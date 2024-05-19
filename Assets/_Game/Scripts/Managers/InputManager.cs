@@ -34,6 +34,9 @@ namespace _Game.Scripts.Managers
             playerInputAsset.Player.Shot.canceled += Shot;
             playerInputAsset.Player.Aim.started += Aim;
             playerInputAsset.Player.Aim.canceled += Aim;
+            CanvasManager.OnCanvasOpened +=DisableInput;
+            CanvasManager.OnCanvasClosed += EnableInput;
+
         }
         private void OnDisable()
         {
@@ -44,6 +47,9 @@ namespace _Game.Scripts.Managers
             playerInputAsset.Player.Shot.canceled -= Shot;
             playerInputAsset.Player.Aim.started -= Aim;
             playerInputAsset.Player.Aim.canceled -= Aim;
+            CanvasManager.OnCanvasOpened -= DisableInput;
+            CanvasManager.OnCanvasClosed -= EnableInput;
+
         }
         private void Update()
         {
@@ -51,6 +57,14 @@ namespace _Game.Scripts.Managers
                 return;
             moveInput=playerInputAsset.Player.Move.ReadValue<Vector2>();
             lookInput = playerInputAsset.Player.Look.ReadValue<Vector2>();
+        }
+        public void DisablePlayerInputs()
+        {
+            this.enabled = false;
+        }
+        public void EnablePlayerInputs()
+        {
+            this.enabled = true;
         }
         public void DisableInput()
         {

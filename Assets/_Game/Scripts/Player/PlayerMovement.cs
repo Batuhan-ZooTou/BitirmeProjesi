@@ -55,6 +55,7 @@ namespace _Game.Scripts.Player
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+        private Vector3 possibleForwardPosition;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -96,14 +97,6 @@ namespace _Game.Scripts.Player
             float targetSpeed = player.inputManager.isSprinting ? SprintSpeed : MoveSpeed;
             // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
-
-
-            // if there is no input, set the target speed to 0
-            if (player.inputManager.moveInput == Vector2.zero)
-            {
-                targetSpeed = 0.0f;
-            }
-            
             // if there is a move input rotate player when the player is moving
             _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + player.mainCamera.transform.eulerAngles.y;
 
@@ -112,9 +105,15 @@ namespace _Game.Scripts.Player
             transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             // a reference to player direction
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-
+            // if there is no input, set the target speed to 0
+            if (player.inputManager.moveInput == Vector2.zero)
+            {
+                possibleForwardPosition = Vector3.zero;
+                targetDirection = Vector3.zero;
+                targetSpeed = 0.0f;
+            }
             // accelerate or decelerate to target speed
-            if (currentHorizontalSpeed < targetSpeed - 0.1f || currentHorizontalSpeed > targetSpeed + 0.1f)
+            if (currentHorizontalSpeed < targetSpeed - 0.001f || currentHorizontalSpeed > targetSpeed + 0.001f)
             {
                 // creates curved result rather than a linear one giving a more organic speed change
                 _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed,Time.deltaTime * SpeedChangeRate);
@@ -125,6 +124,7 @@ namespace _Game.Scripts.Player
             {
                 _speed = targetSpeed;
             }
+            possibleForwardPosition = targetDirection * _speed/2;
             // move the player
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
@@ -195,6 +195,10 @@ namespace _Game.Scripts.Player
             // update animator if using character
             player.playerAnimationController.SetAirMovement(PlayerAnimationController.AirMovement.Land, Grounded);
 
+        }
+        public Vector3 GetForwardPosition()
+        {
+            return possibleForwardPosition;
         }
         private void OnDrawGizmosSelected()
         {

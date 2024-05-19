@@ -16,6 +16,7 @@ namespace _Game.Scripts.Enemy
         [SerializeField][Range(0f, 3f)] private float rotationSmoothing;
         [SerializeField][Range(0.1f,1f)] private float slowRatioOnTurn;
         [SerializeField] private bool canMove;
+        [SerializeField] private bool canLook;
         private float _rotationVelocity;
         private void Start()
         {
@@ -23,8 +24,6 @@ namespace _Game.Scripts.Enemy
         }
         public void MoveTowardsTarget(Vector3 movePosition,Vector3 lookPosition)
         {
-            if (!canMove)
-                return;
             if (enemy.navMeshAgent.CalculatePath(movePosition, path))
             {
                 //Dot product to destination
@@ -41,33 +40,43 @@ namespace _Game.Scripts.Enemy
                 {
                     lookDirection = moveDirection;
                 }
+                //rotate towards target
+                if (canLook)
+                {
+                    //Rotate
+                    RotateTowardsTarget(lookDirection);
+                }
                 Debug.DrawLine(transform.position, transform.position + moveDirection, Color.red);
                 Debug.DrawLine(transform.position, transform.position + lookDirection, Color.green);
-                //which side it should turn (Kinda inverse of dot product it calculates 0 to 1 insted of 1-0)
-                float rotation = Vector3.SignedAngle(lookDirection, moveDirection, Vector3.up);
-                if (Mathf.Abs(rotation)>90)
-                {
-                    float diffrence = Mathf.Abs(rotation) - 90;
-                    if (rotation<0)
-                    {
-                        rotation = -90 + diffrence;
-                    }
-                    else
-                    {
-                        rotation = 90 - diffrence;
-                    }
-                }
-                rotation = rotation.Remap(-90, 90, -1, 1);
-                //Set move animation
-                enemy.animationController.SetMovement(rotation, dot, false, 1);
-                //Calculate current move speed
-                dot = dot.Remap(-1, 1, 1 * slowRatioOnTurn, 1);
-                float currentSpeed = defaultMoveSpeed/100 * dot;
-                enemy.navMeshAgent.speed = currentSpeed;
+                
                 //move along direction
-                enemy.navMeshAgent.Move(moveDirection * currentSpeed);
-                //rotate towards target
-                RotateTowardsTarget(lookDirection);
+                if (canMove)
+                {
+                    //which side it should turn (Kinda inverse of dot product it calculates 0 to 1 insted of 1-0)
+                    float rotation = Vector3.SignedAngle(lookDirection, moveDirection, Vector3.up);
+                    if (Mathf.Abs(rotation) > 90)
+                    {
+                        float diffrence = Mathf.Abs(rotation) - 90;
+                        if (rotation < 0)
+                        {
+                            rotation = -90 + diffrence;
+                        }
+                        else
+                        {
+                            rotation = 90 - diffrence;
+                        }
+                    }
+                    rotation = rotation.Remap(-90, 90, -1, 1);
+                    //Set move animation
+                    enemy.animationController.SetMovement(rotation, dot, false, 1);
+                    //Calculate current move speed
+                    dot = dot.Remap(-1, 1, 1 * slowRatioOnTurn, 1);
+                    float currentSpeed = defaultMoveSpeed / 100 * dot;
+                    enemy.navMeshAgent.speed = currentSpeed;
+                    //Move
+                    enemy.navMeshAgent.Move(moveDirection * currentSpeed);
+                }
+                
             }
         }
         public void ChangeTarget(Transform newDestination = null, Transform newLookTarget = null)

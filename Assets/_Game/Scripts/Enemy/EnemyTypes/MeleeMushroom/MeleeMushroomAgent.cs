@@ -15,8 +15,11 @@ namespace _Game.Scripts.Enemy
             var idle = new IdleState(this);
             var chaseTarget = new ChaseTargetState(this);
             var die = new DeathState(this);
+            var attack = new CombatState(this);
             At(idle,chaseTarget, new FuncPredicate(() => HasTarget()));
+            At(attack, chaseTarget, new FuncPredicate(() => !IsTargetInReach()));
             Any(die, new FuncPredicate(() => IsDead()));
+            Any(attack, new FuncPredicate(() => IsTargetInReach()));
             stateMachine.SetState(idle);
 
         }
@@ -24,7 +27,17 @@ namespace _Game.Scripts.Enemy
         void Any(IState to, IPredicate condition) => stateMachine.AddAnyTransition(to, condition);
         public bool HasTarget()
         {
+            currentDestination = targetSearchZone.GetTarget();
+            currentLookTarget = currentDestination;
             return currentDestination != null;
+        }
+        public bool IsTargetInReach()
+        {
+            if (HasTarget())
+            {
+                return combat.CanReachToTarget();
+            }
+            return false;
         }
         public bool IsDead()
         {

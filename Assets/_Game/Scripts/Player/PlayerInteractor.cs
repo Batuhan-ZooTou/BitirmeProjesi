@@ -20,7 +20,7 @@ namespace _Game.Scripts.Player
         private RaycastHit[] hits = new RaycastHit[16];
         private void Start()
         {
-            mainCamera = Camera.main.transform;
+            mainCamera = player.mainCamera.transform;
             player.inputManager = InputManager.Instance;
             player.inputManager.playerInputAsset.Player.Interact.started += Interact;
         }
@@ -55,7 +55,7 @@ namespace _Game.Scripts.Player
             {
                 if (hits[i].transform.TryGetComponent(out interactableToHighlight))
                 {
-                    float distanceToPlayer = Mathf.Abs(Vector3.Distance(player.transform.position, hits[i].transform.position));
+                    float distanceToPlayer = Mathf.Abs(Vector3.Distance(player.transform.position, hits[i].point));
                     //get closer ones only
                     if (distanceToPlayer < distanceToCloser)
                     {
@@ -119,7 +119,7 @@ namespace _Game.Scripts.Player
             {
                 return;
             }
-            highlightedInteractable.Interact();
+            highlightedInteractable.Interact(transform);
             //dehiglight
             highlightedInteractable = null;
         }

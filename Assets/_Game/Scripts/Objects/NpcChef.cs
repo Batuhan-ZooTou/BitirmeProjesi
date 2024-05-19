@@ -20,6 +20,16 @@ namespace _Game.Scripts.Objects
         public DialogueSpeaker dialogueSpeaker;
         public List<DialogueScriptableObject> dialoguesAssigned=new List<DialogueScriptableObject>();
         public Transform talkPoint;
+        private void OnEnable()
+        {
+            OnBoardingManager.ChefStartsCooking += UpdateDialogue;
+            DialogueManager.OnDialogueEnded += SetInteractables;
+        }
+        private void OnDisable()
+        {
+            OnBoardingManager.ChefStartsCooking -= UpdateDialogue;
+            DialogueManager.OnDialogueEnded -= SetInteractables;
+        }
         private void Start()
         {
             InteractionText.SetText("");
@@ -59,7 +69,7 @@ namespace _Game.Scripts.Objects
                 Highlight();
             }
         }
-        public void Interact()
+        public void Interact(Transform interactor)
         {
             if (interactionState == InteractionState.Interactable)
             {
@@ -68,8 +78,21 @@ namespace _Game.Scripts.Objects
                     canInteract = false;
                     DeHighlight();
                     DialogueManager.Instance.StartDialogue(dialoguesAssigned[0], talkPoint);
+                    OnBoardingManager.Instance.ChefAsksForIngredients();
+                    if (dialoguesAssigned[0].disposeAfter)
+                    {
+                        dialoguesAssigned.RemoveAt(0);
+                    }
                 }
             }
+        }
+        private void SetInteractables()
+        {
+            canInteract = true;
+        }
+        private void UpdateDialogue()
+        {
+            dialoguesAssigned.RemoveAt(0);
         }
         public bool CanStartDialogue()
         {

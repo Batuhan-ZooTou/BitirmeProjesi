@@ -21,5 +21,5 @@ public interface IInteractable
     public void DeHighlight();
     public void AllowInteraction();
     public void DisAllowInteraction();
-    public void Interact();
+    public void Interact(Transform interactor);
 }

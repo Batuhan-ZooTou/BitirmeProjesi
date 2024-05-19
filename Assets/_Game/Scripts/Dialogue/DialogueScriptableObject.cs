@@ -14,6 +14,7 @@ namespace _Game.Scripts.Dialogue
     public class DialogueScriptableObject : ScriptableObject
     {
         public string dialogueId;
+        public bool disposeAfter;
         public List<DialogueSpeakers> dialogueSpeakers = new List<DialogueSpeakers>();
         public List<SentenceScriptableObject> sentenceScriptableObjects = new List<SentenceScriptableObject>();
         [Button]

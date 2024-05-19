@@ -4,10 +4,11 @@ using UnityEngine;
 using _Game.Scripts.Managers;
 using UnityEngine.Animations.Rigging;
 using DG.Tweening;
+using _Game.Scripts.Combat;
 
 namespace _Game.Scripts.Player
 {
-    public class PlayerAnimationController : MonoBehaviour
+    public class PlayerAnimationController : CoreAnimationController
     {
         public enum AirMovement
         {
@@ -24,23 +25,21 @@ namespace _Game.Scripts.Player
         private int _animIDFreeFall => Animator.StringToHash("FreeFall");
         private int _animIDMotionSpeed => Animator.StringToHash("AnimationSpeed");
         #endregion
-        [SerializeField] private Animator _animator;
-        public Animator Animator => _animator;
         [SerializeField]private Player player;
         [SerializeField]private Rig rig;
         public void SetMovement(float directionX, float directionY, bool isRunning, float animSpeed)
         {
             if (isRunning)
             {
-                _animator.SetFloat(_DirectionX, directionX*2, 0.05f, Time.deltaTime);
-                _animator.SetFloat(_DirectionY, directionY*2, 0.05f, Time.deltaTime);
+                animator.SetFloat(_DirectionX, directionX*2, 0.05f, Time.deltaTime);
+                animator.SetFloat(_DirectionY, directionY*2, 0.05f, Time.deltaTime);
             }
             else
             {
-                _animator.SetFloat(_DirectionX, directionX, 0.05f, Time.deltaTime);
-                _animator.SetFloat(_DirectionY, directionY, 0.05f, Time.deltaTime);
+                animator.SetFloat(_DirectionX, directionX, 0.05f, Time.deltaTime);
+                animator.SetFloat(_DirectionY, directionY, 0.05f, Time.deltaTime);
             }
-            _animator.SetFloat(_animIDMotionSpeed, animSpeed);
+            animator.SetFloat(_animIDMotionSpeed, animSpeed);
         }
         public void ChangeRigWeight(float target)
         {
@@ -54,14 +53,14 @@ namespace _Game.Scripts.Player
             switch (airMovement)
             {
                 case AirMovement.Jump:
-                    _animator.SetBool(_animIDJump, value);
+                    animator.SetBool(_animIDJump, value);
 
                     break;
                 case AirMovement.Fall:
-                    _animator.SetBool(_animIDFreeFall, value);
+                    animator.SetBool(_animIDFreeFall, value);
                     break;
                 case AirMovement.Land:
-                    _animator.SetBool(_animIDGrounded, value);
+                    animator.SetBool(_animIDGrounded, value);
                     break;
             }
         }

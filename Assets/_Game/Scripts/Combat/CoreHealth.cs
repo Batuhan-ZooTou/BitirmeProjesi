@@ -75,7 +75,7 @@ namespace _Game.Scripts.Combat
                 });
             });
         }
-        public void DeathFeedback()
+        public virtual void DeathFeedback()
         {
             DOVirtual.Float(0, 1, 1f, (float disolve) =>
             {

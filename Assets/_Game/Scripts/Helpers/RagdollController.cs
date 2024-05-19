@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using _Game.Scripts.Extensions;
 using _Game.Scripts.Enemy;
+using _Game.Scripts.Combat;
 
 namespace _Game.Scripts.Helper
 {
     public class RagdollController : MonoBehaviour
     {
         [SerializeField] private Rigidbody[] ragdollPieces;
-        [SerializeField] private EnemyAnimationController enemy;
+        [SerializeField] private CoreAnimationController animationController;
         [ButtonGroup("Ragdoll")]
         public void FillRagdollPieces()
         {
@@ -28,7 +29,7 @@ namespace _Game.Scripts.Helper
         [ButtonGroup("Ragdoll")]
         public void ActivateRagdollPieces()
         {
-            enemy.Animator.enabled = false;
+            animationController.SetAnimator(false);
             foreach (var piece in ragdollPieces)
             {
                 piece.isKinematic = false;
@@ -37,7 +38,7 @@ namespace _Game.Scripts.Helper
         }
         public void ActivateWithForce(Vector3 direction,float power)
         {
-            enemy.Animator.enabled = false;
+            animationController.SetAnimator(false);
             foreach (var piece in ragdollPieces)
             {
                 piece.isKinematic = false;
